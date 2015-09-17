@@ -2,6 +2,7 @@ package com.team2383.subsystems;
 
 import com.team2383.commands.JoystickDrive;
 import com.team2383.robot.Constants;
+import com.team2383.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -9,6 +10,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.*;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.RobotDrive.*;
+import edu.wpi.first.wpilibj.SPI.Port;
 
 
 /**
@@ -34,12 +36,12 @@ public class Drivetrain extends Subsystem {
 		frontLeft.setFeedbackDevice(FeedbackDevice.AnalogEncoder);
 		frontRight.setFeedbackDevice(FeedbackDevice.AnalogEncoder);
 		
-		rearLeft.setCloseLoopRampRate(3);
-		rearRight.setCloseLoopRampRate(3);
-		frontLeft.setCloseLoopRampRate(3);
-		frontRight.setCloseLoopRampRate(3);
+		rearLeft.setCloseLoopRampRate(2);
+		rearRight.setCloseLoopRampRate(2);
+		frontLeft.setCloseLoopRampRate(2);
+		frontRight.setCloseLoopRampRate(2);
 
-		//set encoders backwards
+		//set encoders backwards bc gooby did it
 		rearLeft.reverseSensor(true);
 		frontLeft.reverseSensor(true);
 		
