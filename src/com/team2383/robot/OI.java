@@ -58,8 +58,8 @@ public class OI {
 		liftUpButton.whenPressed(new LiftUp());
 		liftDownButton.whenPressed(new LiftDown());
 		
-		goForwardButton.whenPressed(new MoveRotations(5));
-		goBackButton.whenPressed(new MoveRotations(-5));
+		goForwardButton.whenPressed(new MoveRotations(3));
+		goBackButton.whenPressed(new MoveRotations(-3));
 		
 		precisionButton.toggleWhenPressed(new PrecisionJoystickDrive());
 		hammerToggleButton.toggleWhenPressed(new ActivateHammer());
