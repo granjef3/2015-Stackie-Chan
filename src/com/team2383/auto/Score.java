@@ -1,13 +1,13 @@
-package com.team2383.commands;
+package com.team2383.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class Autonomous extends Command {
+public class Score extends Command {
 
-    public Autonomous() {
+    public Score() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -22,7 +22,7 @@ public class Autonomous extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true

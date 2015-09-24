@@ -3,16 +3,17 @@ package com.team2383.robot;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.SPI.Port;
 
-import com.team2383.commands.Autonomous;
+import com.team2383.auto.AutoCommand;
 import com.team2383.subsystems.Drivetrain;
 import com.team2383.subsystems.Lift;
 import com.team2383.subsystems.Hammer;
 import com.team2383.subsystems.Slapper;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.AnalogInput;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -30,8 +31,8 @@ public class Robot extends IterativeRobot {
 	public static final Slapper slapper = new Slapper();
 	public static final ADXRS453Gyro gyroMXP = new ADXRS453Gyro(Port.kMXP);
 	public static OI oi;
-
-    Command autonomousCommand;
+	
+	CommandGroup autonomousCommand;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -41,8 +42,8 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 		//enables the PCM controlling the compressor
 		compressor.start();
-        // instantiate the command used for the autonomous period
-        autonomousCommand = new Autonomous();
+		//get auto going
+		autonomousCommand = new AutoCommand();
         //get the gyro going
         gyroMXP.startThread();
         //reset encoders to 0
@@ -82,7 +83,9 @@ public class Robot extends IterativeRobot {
      * You can use it to reset subsystems before shutting down.
      */
     public void disabledInit(){
-
+    	lift.down();
+    	hammer.off();
+    	slapper.off();
     }
 
     /**

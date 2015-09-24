@@ -14,13 +14,14 @@
   <!-- <property name="version" value=""/> -->
 
   <!-- By default the system team number is used -->
-  <!-- <property name="team-number" value=""/> -->
+  <!--  THIS IS FOR PRACTICE BOT SO YOUR DUMB -->
+  <!--  ASS NEEDS TO CHANGE IT FOR DOING MAIN -->
+  <property name="team-number" value="2384"/>
 
   <!-- By default the target is set to 10.TE.AM.2 -->
   <!-- <property name="target" value=""/> -->
 
   <!-- Any other property in build.properties can also be overridden. -->
-  
   <property file="${user.home}/wpilib/wpilib.properties"/>
   <property file="build.properties"/>
   <property file="${user.home}/wpilib/java/${version}/ant/build.properties"/>
