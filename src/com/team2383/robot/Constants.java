@@ -26,7 +26,7 @@ public class Constants {
 	public static double DriveI = 0.0001;
 	public static double DriveD = 0.01;
 	public static double GyroP = 0.03;
-	public static double drivePow = 0;
-	public static double deadband = 0.15;
+	public static double drivePow = 2.2;
+	public static double deadband = 0.001;
 	// constants go here!
 }

@@ -5,6 +5,7 @@ import com.team2383.robot.OI;
 import com.team2383.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -36,6 +37,10 @@ public class JoystickDrive extends Command {
 		y = processAxis(y);
 		rotation = processAxis(rotation);
 		
+		SmartDashboard.putNumber("x joy", x);
+		SmartDashboard.putNumber("y joy", y);
+		SmartDashboard.putNumber("rot joy", rotation);
+		
 		Robot.drivetrain.mecanumDrive(x, y, rotation, 0);
 	}
 
@@ -45,9 +50,14 @@ public class JoystickDrive extends Command {
 	}
 	
 	//deadband and stick scaling
+	//Math.pow doesnt like negative bases
+	//so theres a little magic down there to deal with it
+	//look up javadocs for copySign if you are confused :)
 	protected double processAxis(double axis) {
+		double sign = axis;
 		axis = (Math.abs(axis) > Math.abs(Constants.deadband)) ? axis : 0.0;
-		return Math.pow(axis, Constants.drivePow);
+		axis = Math.pow(Math.abs(axis), Constants.drivePow);
+		return Math.copySign(axis, sign);
 	}
 
 	// Called once after isFinished returns true

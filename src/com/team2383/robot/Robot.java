@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.AnalogInput;
 
 /**
@@ -62,14 +63,6 @@ public class Robot extends IterativeRobot {
         gyroMXP.stopCalibrating();
     }
 
-    /**
-     * This function is called periodically during autonomous
-     */
-    public void autonomousPeriodic() {
-        Scheduler.getInstance().run();
-		drivetrain.logEncoderRotations();
-    }
-
     public void teleopInit() {
 		// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
@@ -93,7 +86,7 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-		drivetrain.logEncoderRotations();
+        periodicTasks();
     }
     
     /**
@@ -101,5 +94,20 @@ public class Robot extends IterativeRobot {
      */
     public void testPeriodic() {
         LiveWindow.run();
+        periodicTasks();
+    }
+    
+    /**
+     * This function is called periodically during autonomous
+     */
+    public void autonomousPeriodic() {
+        Scheduler.getInstance().run();
+        periodicTasks(); 
+    }
+    
+    private void periodicTasks() {
+        SmartDashboard.putNumber("gyro angle", gyroMXP.getAngle());
+        SmartDashboard.putNumber("gyro rate", gyroMXP.getRate());
+		drivetrain.logEncoderRotations();
     }
 }
