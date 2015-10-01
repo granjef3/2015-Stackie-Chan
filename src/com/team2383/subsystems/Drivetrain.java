@@ -3,8 +3,9 @@ package com.team2383.subsystems;
 import com.team2383.commands.JoystickDrive;
 import com.team2383.robot.Constants;
 import com.team2383.robot.Robot;
-import com.team2383.ninjaLib.NinjaPIDSource;
 
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.CANTalon;
@@ -23,7 +24,8 @@ public class Drivetrain extends Subsystem {
 	CANTalon rearLeft, rearRight, frontLeft, frontRight;
 	RobotDrive drive;
 	PIDController gyroController;
-	NinjaPIDSource gyroAngle;
+	GyroPIDSource gyroAngle;
+	NullPIDOut nullOut;
 	
 	private boolean isGyroDirty;
 	
@@ -34,11 +36,14 @@ public class Drivetrain extends Subsystem {
 		this.rearRight = new CANTalon(Constants.rearRightMotor);
 		this.frontLeft = new CANTalon(Constants.frontLeftMotor);
 		this.frontRight = new CANTalon(Constants.frontRightMotor);
+		
+		Robot.gyroMXP.reset();
 
-		this.gyroAngle = new NinjaPIDSource(Robot.gyroMXP::getAngle);
+		this.gyroAngle = new GyroPIDSource();
+		this.nullOut = new NullPIDOut();
 		this.gyroController = new PIDController(Constants.GyroP, 0, 0, 
 				gyroAngle,
-				null
+				nullOut
 				);
 		
 		gyroController.setContinuous(false);
@@ -143,5 +148,22 @@ public class Drivetrain extends Subsystem {
     	frontLeft.setPosition(0);
     	frontRight.setPosition(0);
     }
+    
+	private class NullPIDOut implements PIDOutput {
+
+		@Override
+		public void pidWrite(double output) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	private class GyroPIDSource implements PIDSource {
+		@Override
+		public double pidGet() {
+			return Robot.gyroMXP.getAngle();
+		}		
+	}
 }
 
