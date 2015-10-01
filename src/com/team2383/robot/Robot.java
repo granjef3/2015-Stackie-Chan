@@ -111,8 +111,8 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("gyro angle", gyroMXP.getAngle());
         SmartDashboard.putNumber("gyro rate", gyroMXP.getRate());
 		drivetrain.logEncoderRotations();
-		
-		if (pcm.getPressureSwitchValue()) {
+
+		if (!pcm.getPressureSwitchValue()) {
 			//Relay
 			compressorRelay.set(Relay.Value.kOn);
 		} else {
