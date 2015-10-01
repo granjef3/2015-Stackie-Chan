@@ -3,6 +3,7 @@ package com.team2383.robot;
 import com.team2383.auto.Move;
 import com.team2383.commands.*;
 
+import com.team2383.ninjaLib.DPadButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 /**

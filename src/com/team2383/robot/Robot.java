@@ -1,21 +1,22 @@
 package com.team2383.robot;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.SPI.Port;
 
 import com.team2383.auto.AutoCommand;
+import com.team2383.commands.PeriodicCommand;
 import com.team2383.subsystems.Drivetrain;
 import com.team2383.subsystems.Lift;
+import com.team2383.subsystems.PCM;
 import com.team2383.subsystems.Hammer;
 import com.team2383.subsystems.Slapper;
 
+import com.team2383.ninjaLib.ADXRS453Gyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.AnalogInput;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -26,7 +27,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
  */
 public class Robot extends IterativeRobot {
 
-	public static final Compressor pcm = new Compressor();
+	public static final PCM pcm = new PCM();
 	public static final Relay compressorRelay = new Relay(0, Relay.Direction.kForward);
 	public static final Drivetrain drivetrain = new Drivetrain();
 	public static final Lift lift = new Lift();
@@ -36,6 +37,7 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	
 	CommandGroup autonomousCommand;
+	Command periodicCommand;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -43,16 +45,17 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		oi = new OI();
-		//disables the PCM controlling the pcm
-		pcm.stop();
 		//get auto going
 		autonomousCommand = new AutoCommand();
+		periodicCommand = new PeriodicCommand();
         //get the gyro going
         gyroMXP.startThread();
         //reset encoders to 0
         drivetrain.setEncoderZero();
         drivetrain.setEncoderZero();
         drivetrain.setEncoderZero();
+        
+        periodicCommand.start();
     }
 	
 	public void disabledPeriodic() {
@@ -88,7 +91,6 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        periodicTasks();
     }
     
     /**
@@ -96,7 +98,6 @@ public class Robot extends IterativeRobot {
      */
     public void testPeriodic() {
         LiveWindow.run();
-        periodicTasks();
     }
     
     /**
@@ -104,19 +105,5 @@ public class Robot extends IterativeRobot {
      */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
-        periodicTasks(); 
-    }
-    
-    private void periodicTasks() {
-        SmartDashboard.putNumber("gyro angle", gyroMXP.getAngle());
-        SmartDashboard.putNumber("gyro rate", gyroMXP.getRate());
-		drivetrain.logEncoderRotations();
-
-		if (!pcm.getPressureSwitchValue()) {
-			//Relay
-			compressorRelay.set(Relay.Value.kOn);
-		} else {
-			compressorRelay.set(Relay.Value.kOff);
-		}
     }
 }

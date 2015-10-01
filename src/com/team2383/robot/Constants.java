@@ -14,10 +14,10 @@ public class Constants {
 	public static int frontLeftMotor = 3;
 	public static int frontRightMotor = 4;
 
-	public static int liftLeftSolenoid1 = 0;
-	public static int liftLeftSolenoid2 = 1;
-	public static int liftRightSolenoid1 = 2;
-	public static int liftRightSolenoid2 = 3;
+	public static int liftLeftSolenoid1 = 1;
+	public static int liftLeftSolenoid2 = 0;
+	public static int liftRightSolenoid1 = 3;
+	public static int liftRightSolenoid2 = 2;
 	
 	public static int hammerSolenoid = 5;
 	public static int slapperSolenoid = 6;
