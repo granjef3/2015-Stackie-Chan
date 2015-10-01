@@ -2,11 +2,15 @@ package com.team2383.subsystems;
 
 import com.team2383.commands.JoystickDrive;
 import com.team2383.robot.Constants;
+import com.team2383.robot.Robot;
 
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.*;
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.RobotDrive.*;
 
@@ -19,6 +23,11 @@ public class Drivetrain extends Subsystem {
 	
 	CANTalon rearLeft, rearRight, frontLeft, frontRight;
 	RobotDrive drive;
+	PIDController gyroController;
+	GyroPIDSource gyroAngle;
+	NullPIDOut nullOut;
+	
+	private boolean isGyroDirty;
 	
 	public Drivetrain() {
 		super("Drivetrain");
@@ -27,6 +36,22 @@ public class Drivetrain extends Subsystem {
 		this.rearRight = new CANTalon(Constants.rearRightMotor);
 		this.frontLeft = new CANTalon(Constants.frontLeftMotor);
 		this.frontRight = new CANTalon(Constants.frontRightMotor);
+		
+		Robot.gyroMXP.reset();
+
+		this.gyroAngle = new GyroPIDSource();
+		this.nullOut = new NullPIDOut();
+		this.gyroController = new PIDController(Constants.GyroP, 0, 0, 
+				gyroAngle,
+				nullOut
+				);
+		
+		gyroController.setContinuous(false);
+		gyroController.setAbsoluteTolerance(1.0);
+		gyroController.setOutputRange(-1, 1);
+		gyroController.setSetpoint(0);
+		gyroController.enable();
+		
 		
 		//Encoders are hooked up directly to Talons
 		rearLeft.setFeedbackDevice(FeedbackDevice.AnalogEncoder);
@@ -42,6 +67,12 @@ public class Drivetrain extends Subsystem {
 		//set encoders backwards
 		rearLeft.reverseSensor(true);
 		frontLeft.reverseSensor(true);
+		
+		//set them motors to brake mode
+		rearLeft.enableBrakeMode(true);
+		rearRight.enableBrakeMode(true);
+		frontLeft.enableBrakeMode(true);
+		frontRight.enableBrakeMode(true);
 		
 		//Set our PID constants (located in robot.Constants;
 		rearLeft.setPID(Constants.DriveP, Constants.DriveI, Constants.DriveD);
@@ -64,11 +95,37 @@ public class Drivetrain extends Subsystem {
     }
     
     public void mecanumDrive(double x, double y, double rotation, double gyro) {
-    	drive.mecanumDrive_Cartesian(x, y, rotation, gyro);
+    	
+    	drive.mecanumDrive_Cartesian(x, y, correctRotation(rotation), gyro);
     }
     
     public void polarMecanumDrive(double magnitude, double direction, double rotation) {
-    	drive.mecanumDrive_Polar(magnitude, direction, rotation);
+    	drive.mecanumDrive_Polar(magnitude, direction, correctRotation(rotation));
+    }
+    
+    //return gyro corrected rotation
+    private double correctRotation(double rotation) {
+		SmartDashboard.putNumber("PID Output", gyroController.get());
+		SmartDashboard.putNumber("PID Setpoint", gyroController.getSetpoint());
+		//SmartDashboard.putNumber("Gyro Angle" , Robot.gyroMXP.getAngle());
+    	
+    	//Use gyro
+		if (
+				(Math.abs(Robot.gyroMXP.getRate()) < 25)
+				&& 
+				(Math.abs(rotation) < 0.01)
+			) {
+			if (isGyroDirty) {
+				gyroController.setSetpoint(Robot.gyroMXP.getAngle());
+				isGyroDirty = false;
+			}
+			return gyroController.get();
+		//dont use gyro
+		} else {
+			isGyroDirty = true; //we are changing angles, so the gyro is always dirty hehe
+			gyroController.setSetpoint(Robot.gyroMXP.getAngle());
+			return rotation;
+		}
     }
     
     public void logEncoderRotations() {
@@ -97,5 +154,21 @@ public class Drivetrain extends Subsystem {
     	frontLeft.setPosition(0);
     	frontRight.setPosition(0);
     }
+    
+	private class NullPIDOut implements PIDOutput {
+
+		@Override
+		public void pidWrite(double output) {
+			
+		}
+		
+	}
+	
+	private class GyroPIDSource implements PIDSource {
+		@Override
+		public double pidGet() {
+			return Robot.gyroMXP.getAngle();
+		}		
+	}
 }
 

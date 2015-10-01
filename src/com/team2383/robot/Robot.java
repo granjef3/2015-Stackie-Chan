@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,11 +29,11 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Robot extends IterativeRobot {
 
 	public static final PCM pcm = new PCM();
+	public static final ADXRS453Gyro gyroMXP = new ADXRS453Gyro(Port.kMXP);
 	public static final Drivetrain drivetrain = new Drivetrain();
 	public static final Lift lift = new Lift();
 	public static final Hammer hammer = new Hammer();
 	public static final Slapper slapper = new Slapper();
-	public static final ADXRS453Gyro gyroMXP = new ADXRS453Gyro(Port.kMXP);
 	public static OI oi;
 	
 	CommandGroup autonomousCommand;
@@ -91,6 +92,7 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        SmartDashboard.putNumber("gyro", gyroMXP.getAngle());
     }
     
     /**
