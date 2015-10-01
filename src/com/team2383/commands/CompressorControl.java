@@ -21,7 +21,7 @@ public class CompressorControl extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-		//Robot.pcm.runCompressorIfLowPressure();
+		Robot.pcm.runCompressorIfLowPressure();
     }
 
     // Make this return true when this Command no longer needs to run execute()
