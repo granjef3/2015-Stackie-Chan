@@ -28,7 +28,6 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Robot extends IterativeRobot {
 
 	public static final PCM pcm = new PCM();
-	public static final Relay compressorRelay = new Relay(0, Relay.Direction.kForward);
 	public static final Drivetrain drivetrain = new Drivetrain();
 	public static final Lift lift = new Lift();
 	public static final Hammer hammer = new Hammer();
@@ -45,15 +44,16 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		oi = new OI();
-		//get auto going
-		autonomousCommand = new AutoCommand();
-		periodicCommand = new PeriodicCommand();
         //get the gyro going
         gyroMXP.startThread();
         //reset encoders to 0
         drivetrain.setEncoderZero();
         drivetrain.setEncoderZero();
         drivetrain.setEncoderZero();
+        
+		//get auto going
+		autonomousCommand = new AutoCommand();
+		periodicCommand = new PeriodicCommand();
         
         periodicCommand.start();
     }

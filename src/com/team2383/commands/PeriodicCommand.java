@@ -15,7 +15,7 @@ public class PeriodicCommand extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	//dont require drivetrain bc logEncoderRotations can run
-    	//without anything else going on.
+    	//without anything else going on
     }
 
     // Called just before this Command runs the first time

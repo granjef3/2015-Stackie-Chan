@@ -1,7 +1,6 @@
 package com.team2383.commands;
 
 import com.team2383.robot.Constants;
-import com.team2383.robot.OI;
 import com.team2383.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -12,8 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class JoystickDrive extends Command {
 	public JoystickDrive() {
-		super("JoystickDrive");
-		requires(Robot.drivetrain);
+		this("JoystickDrive");
 	}
 	
 	public JoystickDrive(String name) {

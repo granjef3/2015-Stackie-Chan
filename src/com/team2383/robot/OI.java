@@ -79,10 +79,5 @@ public class OI {
 	public double getRotation() {
 		return driverController.getRawAxis(4);
 	}
-	
-	//private functions
-	private double deadband(double min, double value) {
-		return (Math.abs(value) < min) ? 0 : 1;
-	}
 }
 

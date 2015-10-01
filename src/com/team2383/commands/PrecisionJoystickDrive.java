@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class PrecisionJoystickDrive extends JoystickDrive {
 	public PrecisionJoystickDrive() {
 		super("PrecisionJoystickDrive");
-		requires(Robot.drivetrain);
 	}
 
 	// Called just before this Command runs the first time
