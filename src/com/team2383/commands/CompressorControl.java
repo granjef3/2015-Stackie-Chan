@@ -12,7 +12,7 @@ public class CompressorControl extends Command {
     public CompressorControl() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	//requires(Robot.pcm);
+    	requires(Robot.pcm);
     }
 
     // Called just before this Command runs the first time
