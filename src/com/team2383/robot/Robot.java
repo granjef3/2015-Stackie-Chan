@@ -10,6 +10,7 @@ import com.team2383.subsystems.Hammer;
 import com.team2383.subsystems.Slapper;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -25,7 +26,8 @@ import edu.wpi.first.wpilibj.AnalogInput;
  */
 public class Robot extends IterativeRobot {
 
-	public static final Compressor compressor = new Compressor();
+	public static final Compressor pcm = new Compressor();
+	public static final Relay compressorRelay = new Relay(0, Relay.Direction.kForward);
 	public static final Drivetrain drivetrain = new Drivetrain();
 	public static final Lift lift = new Lift();
 	public static final Hammer hammer = new Hammer();
@@ -41,8 +43,8 @@ public class Robot extends IterativeRobot {
      */
     public void robotInit() {
 		oi = new OI();
-		//enables the PCM controlling the compressor
-		compressor.start();
+		//disables the PCM controlling the pcm
+		pcm.stop();
 		//get auto going
 		autonomousCommand = new AutoCommand();
         //get the gyro going
@@ -76,7 +78,7 @@ public class Robot extends IterativeRobot {
      * You can use it to reset subsystems before shutting down.
      */
     public void disabledInit(){
-    	lift.down();
+    	lift.up();
     	hammer.off();
     	slapper.off();
     }
@@ -109,5 +111,12 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("gyro angle", gyroMXP.getAngle());
         SmartDashboard.putNumber("gyro rate", gyroMXP.getRate());
 		drivetrain.logEncoderRotations();
+		
+		if (pcm.getPressureSwitchValue()) {
+			//Relay
+			compressorRelay.set(Relay.Value.kOn);
+		} else {
+			compressorRelay.set(Relay.Value.kOff);
+		}
     }
 }

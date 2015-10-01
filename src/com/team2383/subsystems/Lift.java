@@ -1,5 +1,6 @@
 package com.team2383.subsystems;
 
+import com.team2383.commands.LiftUp;
 import com.team2383.robot.Constants;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -22,7 +23,7 @@ public class Lift extends Subsystem {
 	}
 
     protected void initDefaultCommand() {
-    	//no default command
+    	setDefaultCommand(new LiftUp());
     }
     
     public void up() {

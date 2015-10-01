@@ -43,6 +43,12 @@ public class Drivetrain extends Subsystem {
 		rearLeft.reverseSensor(true);
 		frontLeft.reverseSensor(true);
 		
+		//set them motors to brake mode
+		rearLeft.enableBrakeMode(true);
+		rearRight.enableBrakeMode(true);
+		frontLeft.enableBrakeMode(true);
+		frontRight.enableBrakeMode(true);
+		
 		//Set our PID constants (located in robot.Constants;
 		rearLeft.setPID(Constants.DriveP, Constants.DriveI, Constants.DriveD);
 		rearRight.setPID(Constants.DriveP, Constants.DriveI, Constants.DriveD);

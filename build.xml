@@ -16,7 +16,7 @@
   <!-- By default the system team number is used -->
   <!--  THIS IS FOR PRACTICE BOT SO YOUR DUMB -->
   <!--  ASS NEEDS TO CHANGE IT FOR DOING MAIN -->
-  <property name="team-number" value="2384"/>
+  <property name="team-number" value="2383"/>
 
   <!-- By default the target is set to 10.TE.AM.2 -->
   <!-- <property name="target" value=""/> -->
