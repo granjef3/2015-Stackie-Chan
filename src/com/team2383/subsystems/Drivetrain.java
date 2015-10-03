@@ -1,6 +1,6 @@
 package com.team2383.subsystems;
 
-import com.team2383.commands.JoystickDrive;
+import com.team2383.commands.PrecisionJoystickDrive;
 import com.team2383.robot.Constants;
 import com.team2383.robot.Robot;
 
@@ -91,7 +91,7 @@ public class Drivetrain extends Subsystem {
 
     protected void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new JoystickDrive());
+        setDefaultCommand(new PrecisionJoystickDrive());
     }
     
     public void mecanumDrive(double x, double y, double rotation, double gyro) {
