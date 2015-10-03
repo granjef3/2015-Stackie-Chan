@@ -5,14 +5,18 @@ import java.nio.ByteOrder;
 import java.util.BitSet;
 import java.util.TimerTask;
 
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSource.*;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj.util.BoundaryException;
 import edu.wpi.first.wpilibj.Timer;
+
 
 /**
  * @author Kevin Harrilal (kevin@team2168.org)
  */
-public class ADXRS453Gyro {
+public class ADXRS453Gyro implements PIDSource {
 
 	static final int DATA_SIZE = 4; //4 bytes = 32 bits
 	static final byte PARITY_BIT = (byte) 0x01; //parity check on first bit
@@ -46,6 +50,7 @@ public class ADXRS453Gyro {
 	private volatile int id;
 	private volatile double temp;
 	private volatile int status;
+	private PIDSourceEnum pidSource;
 
 	//calibration loop
 	private volatile boolean calibrate;
@@ -64,6 +69,12 @@ public class ADXRS453Gyro {
 	//thread executor
 	private java.util.Timer executor;
 	private long period;
+	
+	//type of value to pass to PIDConttroller
+	public static enum PIDSourceEnum {
+		rate,
+		angle
+	}
 
 	public ADXRS453Gyro(SPI.Port port) {
 		//run at 333Hz loop
@@ -207,6 +218,35 @@ public class ADXRS453Gyro {
 			temp += Integer.toBinaryString(b & 255 | 256).substring(1) + " ";
 
 		return temp;
+	}
+	
+	/**
+	 * Get the output of the gyro for use with PIDControllers.
+	 * May be the angle or rate depending on the set PIDSourceParameter
+	 *
+	 * @return the output according to the gyro
+	 */
+	@Override
+	public double pidGet() {
+		switch (pidSource) {
+		case rate:
+			return getRate();
+		case angle:
+			return getAngle();
+		default:
+			return 0.0;
+		}
+	}
+	
+	/**
+	 * Set which parameter of the gyro you are using as a process control
+	 * variable. The Gyro class supports the rate and angle parameters
+	 *
+	 * @param pidSource
+	 *            An enum to select the parameter.
+	 */
+	public void setPIDSourceParameter(PIDSourceEnum pidSource) {
+		this.pidSource = pidSource;
 	}
 
 	////////// PRIVATE FUNCTIONS ////////////////

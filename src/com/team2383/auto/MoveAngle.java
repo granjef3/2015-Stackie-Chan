@@ -47,9 +47,8 @@ public class MoveAngle extends PIDCommand {
     	this.error = 0;
     	Robot.drivetrain.setEncoderZero();
     	if (resetGyro) {
-    		Robot.drivetrain.setEncoderZero();
+    		Robot.gyroMXP.reset();
     	}
-    	Robot.drivetrain.setEncoderZero();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -69,13 +68,11 @@ public class MoveAngle extends PIDCommand {
     // Called once after isFinished returns true
     protected void end() {
     	Robot.drivetrain.setEncoderZero();
-    	Robot.drivetrain.setEncoderZero();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.drivetrain.setEncoderZero();
     	Robot.drivetrain.setEncoderZero();
     }
 }

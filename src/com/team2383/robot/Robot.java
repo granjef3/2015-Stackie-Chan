@@ -49,8 +49,6 @@ public class Robot extends IterativeRobot {
         gyroMXP.startThread();
         //reset encoders to 0
         drivetrain.setEncoderZero();
-        drivetrain.setEncoderZero();
-        drivetrain.setEncoderZero();
         
 		//get auto going
 		autonomousCommand = new AutoCommand();

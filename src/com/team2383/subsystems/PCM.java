@@ -2,6 +2,7 @@ package com.team2383.subsystems;
 
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.team2383.commands.CompressorControl;
@@ -9,11 +10,12 @@ import com.team2383.commands.CompressorControl;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Sendable;
 
 /**
  *
  */
-public class PCM extends Subsystem {
+public class PCM extends Subsystem implements Sendable {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.

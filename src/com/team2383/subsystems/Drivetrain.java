@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.*;
+import edu.wpi.first.wpilibj.NamedSendable;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.RobotDrive.*;
@@ -24,8 +25,6 @@ public class Drivetrain extends Subsystem {
 	CANTalon rearLeft, rearRight, frontLeft, frontRight;
 	RobotDrive drive;
 	PIDController gyroController;
-	GyroPIDSource gyroAngle;
-	NullPIDOut nullOut;
 	
 	private boolean isGyroDirty;
 	
@@ -39,11 +38,9 @@ public class Drivetrain extends Subsystem {
 		
 		Robot.gyroMXP.reset();
 
-		this.gyroAngle = new GyroPIDSource();
-		this.nullOut = new NullPIDOut();
 		this.gyroController = new PIDController(Constants.GyroP, 0, 0, 
-				gyroAngle,
-				nullOut
+				Robot.gyroMXP,
+				null
 				);
 		
 		gyroController.setContinuous(false);
@@ -148,27 +145,15 @@ public class Drivetrain extends Subsystem {
     	return avg;
     }
     
-    public void setEncoderZero() {
-    	rearLeft.setPosition(0);
-    	rearRight.setPosition(0);
-    	frontLeft.setPosition(0);
-    	frontRight.setPosition(0);
-    }
     
-	private class NullPIDOut implements PIDOutput {
-
-		@Override
-		public void pidWrite(double output) {
-			
-		}
-		
-	}
-	
-	private class GyroPIDSource implements PIDSource {
-		@Override
-		public double pidGet() {
-			return Robot.gyroMXP.getAngle();
-		}		
-	}
+    //set encoders to zero twice because talon firmware is weird
+    public void setEncoderZero() {
+    	for (int i = 0; i < 2; i++) {
+	    	rearLeft.setPosition(0);
+	    	rearRight.setPosition(0);
+	    	frontLeft.setPosition(0);
+	    	frontRight.setPosition(0);
+    	}
+    }
 }
 

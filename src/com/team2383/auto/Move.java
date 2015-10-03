@@ -29,7 +29,6 @@ public class Move extends Command {
     protected void initialize() {
     	Robot.drivetrain.setEncoderZero();
     	Robot.gyroMXP.reset();
-    	Robot.drivetrain.setEncoderZero(); //call twice; see functional limitation 21.17
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -47,13 +46,11 @@ public class Move extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	Robot.drivetrain.setEncoderZero();
-    	Robot.drivetrain.setEncoderZero();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.drivetrain.setEncoderZero();
     	Robot.drivetrain.setEncoderZero();
     }
 }
